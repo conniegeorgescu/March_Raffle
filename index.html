@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probrand March Raffle</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface-2: #f0f2f5;
+    --border: #e2e5ea;
+    --border-strong: #c8cdd5;
+    --text-primary: #1a1d23;
+    --text-secondary: #5a6070;
+    --text-muted: #9aa0ad;
+    --accent: #0057b8;
+    --accent-light: #e8f0fb;
+    --accent-text: #003d8a;
+    --gold: #c8860a;
+    --gold-light: #fdf3e0;
+    --gold-text: #7a5000;
+    --danger: #c0392b;
+    --danger-light: #fdf0ef;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2.5rem 1rem 4rem;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent-text);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .container { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 1.1rem;
+  }
+
+  .add-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; }
+
+  input[type="text"], input[type="number"], textarea {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.9rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    padding: 0.52rem 0.75rem;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,87,184,0.1);
+    background: #fff;
+  }
+  input[type="text"] { width: 220px; }
+  input[type="number"] { width: 110px; }
+  textarea { width: 100%; resize: vertical; min-height: 88px; }
+
+  .btn {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.52rem 1.1rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #0049a0; }
+
+  .btn-ghost {
+    background: var(--surface);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { background: var(--surface-2); border-color: var(--border-strong); color: var(--text-primary); }
+
+  .btn-sm { font-size: 0.78rem; padding: 0.35rem 0.75rem; }
+  .btn-danger-ghost { background: transparent; color: var(--danger); border: 1px solid #f0c4c0; font-size: 0.75rem; padding: 0.28rem 0.6rem; border-radius: var(--radius-sm); cursor: pointer; transition: background 0.12s; }
+  .btn-danger-ghost:hover { background: var(--danger-light); }
+
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.72rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin: 1.1rem 0;
+  }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .paste-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; }
+
+  .stats-bar {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.1rem;
+  }
+  .stat-val { font-size: 1.35rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
+
+  .entrants-list { list-style: none; display: flex; flex-direction: column; gap: 5px; max-height: 300px; overflow-y: auto; }
+  .entrants-list::-webkit-scrollbar { width: 5px; }
+  .entrants-list::-webkit-scrollbar-track { background: transparent; }
+  .entrants-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .entrant-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.75rem;
+    transition: border-color 0.12s;
+  }
+  .entrant-item:hover { border-color: var(--border-strong); }
+  .entrant-name { flex: 1; font-size: 0.88rem; font-weight: 500; color: var(--text-primary); }
+  .ticket-bar-wrap { width: 70px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .ticket-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+  .pct-label { font-size: 0.7rem; color: var(--text-muted); min-width: 38px; text-align: right; }
+  .ticket-count { font-size: 0.78rem; color: var(--text-secondary); min-width: 90px; text-align: right; }
+
+  .empty-state { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 2rem; }
+
+  .draw-section { text-align: center; padding: 0.5rem 0; }
+
+  .draw-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.85rem 2.5rem;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    box-shadow: 0 2px 8px rgba(0,87,184,0.25);
+  }
+  .draw-btn:hover:not(:disabled) { background: #0049a0; box-shadow: 0 4px 14px rgba(0,87,184,0.3); transform: translateY(-1px); }
+  .draw-btn:active:not(:disabled) { transform: scale(0.98); }
+  .draw-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+  .draw-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 10px; }
+
+  .spinner-box {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .spinner-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+  .spinner-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-height: 2.25rem;
+    letter-spacing: 0.01em;
+    transition: color 0.05s;
+  }
+
+  .winner-box {
+    display: none;
+    background: var(--gold-light);
+    border: 1.5px solid #e8c06a;
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes popIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .winner-eyebrow { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 0.5rem; }
+  .winner-name { font-size: 2.2rem; font-weight: 800; color: var(--gold-text); margin: 0.4rem 0; letter-spacing: -0.01em; }
+  .winner-tickets { font-size: 0.85rem; color: var(--gold); font-weight: 500; }
+  .winner-odds { font-size: 0.78rem; color: #a07820; margin-top: 4px; }
+  .confetti-row { font-size: 1.4rem; letter-spacing: 0.3em; margin: 0.6rem 0; }
+
+  .redraw-row { display: flex; gap: 10px; justify-content: center; margin-top: 1.25rem; flex-wrap: wrap; }
+
+  @media (max-width: 540px) {
+    h1 { font-size: 1.5rem; }
+    input[type="text"] { width: 100%; }
+    .add-row { flex-direction: column; }
+    .ticket-bar-wrap, .pct-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Probrand Sales</div>
+  <h1>Probrand March Raffle</h1>
+  <p class="subtitle">More Orders, More Chances</p>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="card-title">Add entrant</div>
+    <div class="add-row">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="nameInput" placeholder="e.g. Elliot Smith" />
+      </div>
+      <div class="field">
+        <label>Tickets</label>
+        <input type="number" id="ticketsInput" placeholder="e.g. 1126" min="1" />
+      </div>
+      <button class="btn btn-primary" onclick="addEntrant()" style="align-self:flex-end">Add</button>
+    </div>
+
+    <div class="divider">or paste a list</div>
+
+    <textarea id="bulkInput" placeholder="One per line: Name, Tickets&#10;Elliot Smith, 1126&#10;Sarah Jones, 47&#10;Tom Clarke, 312"></textarea>
+    <p class="paste-hint">Format: Name, Tickets — one person per line. Commas or tabs both work.</p>
+    <div style="margin-top:10px; display:flex; gap:8px;">
+      <button class="btn btn-ghost btn-sm" onclick="importBulk()">Import list</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearAll()">Clear all</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-val" id="statPeople">0</div><div class="stat-label">Entrants</div></div>
+      <div class="stat"><div class="stat-val" id="statTickets">0</div><div class="stat-label">Total tickets</div></div>
+      <div class="stat"><div class="stat-val" id="statTop">—</div><div class="stat-label">Highest entry</div></div>
+    </div>
+    <ul class="entrants-list" id="entrantsList">
+      <li class="empty-state" id="emptyState">No entrants yet — add someone above.</li>
+    </ul>
+  </div>
+
+  <div class="draw-section">
+    <button class="draw-btn" id="drawBtn" onclick="startDraw()" disabled>
+      &#127922;&nbsp; Draw Winner
+    </button>
+    <p class="draw-hint" id="drawHint">Add at least 2 entrants to draw</p>
+  </div>
+
+  <div class="spinner-box" id="spinnerBox">
+    <p class="spinner-label">Drawing&hellip;</p>
+    <div class="spinner-name" id="spinnerName">&nbsp;</div>
+  </div>
+
+  <div class="winner-box" id="winnerBox">
+    <p class="winner-eyebrow">&#127881; Winner</p>
+    <div class="confetti-row">&#11088; &#127920; &#11088;</div>
+    <div class="winner-name" id="winnerName"></div>
+    <p class="winner-tickets" id="winnerTickets"></p>
+    <p class="winner-odds" id="winnerOdds"></p>
+    <div class="redraw-row">
+      <button class="btn btn-ghost btn-sm" onclick="redraw()">Draw again</button>
+      <button class="btn btn-ghost btn-sm" onclick="removeWinner()">Remove winner &amp; draw next</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let entrants = [];
+let lastWinnerIndex = null;
+
+function addEntrant() {
+  const name = document.getElementById('nameInput').value.trim();
+  const tickets = parseInt(document.getElementById('ticketsInput').value);
+  if (!name) { alert('Please enter a name.'); return; }
+  if (!tickets || tickets < 1) { alert('Please enter a valid ticket count (at least 1).'); return; }
+  const existing = entrants.findIndex(e => e.name.toLowerCase() === name.toLowerCase());
+  if (existing >= 0) entrants[existing].tickets += tickets;
+  else entrants.push({ name, tickets });
+  document.getElementById('nameInput').value = '';
+  document.getElementById('ticketsInput').value = '';
+  document.getElementById('nameInput').focus();
+  render();
+}
+
+function importBulk() {
+  const text = document.getElementById('bulkInput').value.trim();
+  if (!text) return;
+  let added = 0, skipped = 0;
+  text.split('\n').forEach(line => {
+    line = line.trim();
+    if (!line) return;
+    const parts = line.split(/[,\t]+/);
+    if (parts.length < 2) { skipped++; return; }
+    const name = parts[0].trim();
+    const tickets = parseInt(parts[parts.length - 1].trim());
+    if (!name || isNaN(tickets) || tickets < 1) { skipped++; return; }
+    const existing = entrants.findIndex(e => e.name.toLowerCase() === name.toLowerCase());
+    if (existing >= 0) entrants[existing].tickets += tickets;
+    else entrants.push({ name, tickets });
+    added++;
+  });
+  document.getElementById('bulkInput').value = '';
+  render();
+  if (skipped > 0) alert('Imported ' + added + ' entries. ' + skipped + ' lines skipped (unrecognised format).');
+}
+
+function removeEntrant(i) {
+  entrants.splice(i, 1);
+  render();
+}
+
+function clearAll() {
+  if (entrants.length && !confirm('Remove all entrants?')) return;
+  entrants = [];
+  lastWinnerIndex = null;
+  document.getElementById('winnerBox').style.display = 'none';
+  document.getElementById('spinnerBox').style.display = 'none';
+  render();
+}
+
+function render() {
+  const total = entrants.reduce((s, e) => s + e.tickets, 0);
+  const max = entrants.length ? Math.max(...entrants.map(e => e.tickets)) : 0;
+  document.getElementById('statPeople').textContent = entrants.length;
+  document.getElementById('statTickets').textContent = total.toLocaleString();
+  document.getElementById('statTop').textContent = max ? max.toLocaleString() : '—';
+
+  const list = document.getElementById('entrantsList');
+  if (entrants.length === 0) {
+    list.innerHTML = '<li class="empty-state">No entrants yet — add someone above.</li>';
+  } else {
+    const sorted = entrants.map((e, i) => ({ ...e, orig: i })).sort((a, b) => b.tickets - a.tickets);
+    list.innerHTML = sorted.map(e => {
+      const pct = total ? (e.tickets / total) * 100 : 0;
+      return `<li class="entrant-item">
+        <span class="entrant-name">${esc(e.name)}</span>
+        <div class="ticket-bar-wrap"><div class="ticket-bar" style="width:${Math.max(pct,2)}%"></div></div>
+        <span class="pct-label">${pct.toFixed(1)}%</span>
+        <span class="ticket-count">${e.tickets.toLocaleString()} ticket${e.tickets !== 1 ? 's' : ''}</span>
+        <button class="btn-danger-ghost" onclick="removeEntrant(${e.orig})">Remove</button>
+      </li>`;
+    }).join('');
+  }
+
+  const drawBtn = document.getElementById('drawBtn');
+  const drawHint = document.getElementById('drawHint');
+  if (entrants.length >= 2) {
+    drawBtn.disabled = false;
+    drawHint.textContent = 'Each ticket is an equal chance to win';
+  } else {
+    drawBtn.disabled = true;
+    drawHint.textContent = entrants.length === 1 ? 'Add at least 1 more entrant to draw' : 'Add at least 2 entrants to draw';
+  }
+}
+
+function pickWinner() {
+  const total = entrants.reduce((s, e) => s + e.tickets, 0);
+  let r = Math.floor(Math.random() * total);
+  for (let i = 0; i < entrants.length; i++) {
+    r -= entrants[i].tickets;
+    if (r < 0) return i;
+  }
+  return entrants.length - 1;
+}
+
+function startDraw() {
+  if (entrants.length < 2) return;
+  document.getElementById('winnerBox').style.display = 'none';
+  document.getElementById('spinnerBox').style.display = 'block';
+  document.getElementById('drawBtn').disabled = true;
+
+  const winner = pickWinner();
+  lastWinnerIndex = winner;
+  const names = entrants.map(e => e.name);
+  const spinnerName = document.getElementById('spinnerName');
+  let step = 0;
+  const totalSteps = 28;
+
+  function spin() {
+    if (step < totalSteps) {
+      const delay = step < 18 ? 55 : 55 + (step - 18) * 40;
+      spinnerName.textContent = names[Math.floor(Math.random() * names.length)];
+      step++;
+      setTimeout(spin, delay);
+    } else {
+      spinnerName.textContent = entrants[winner].name;
+      setTimeout(showWinner, 450);
+    }
+  }
+  spin();
+}
+
+function showWinner() {
+  const i = lastWinnerIndex;
+  const total = entrants.reduce((s, e) => s + e.tickets, 0);
+  const pct = total ? (entrants[i].tickets / total * 100).toFixed(2) : '0.00';
+  document.getElementById('spinnerBox').style.display = 'none';
+  document.getElementById('winnerName').textContent = entrants[i].name;
+  document.getElementById('winnerTickets').textContent = entrants[i].tickets.toLocaleString() + ' tickets';
+  document.getElementById('winnerOdds').textContent = pct + '% chance of winning';
+  document.getElementById('winnerBox').style.display = 'block';
+  document.getElementById('drawBtn').disabled = false;
+}
+
+function redraw() {
+  document.getElementById('winnerBox').style.display = 'none';
+  startDraw();
+}
+
+function removeWinner() {
+  if (lastWinnerIndex !== null) { entrants.splice(lastWinnerIndex, 1); lastWinnerIndex = null; render(); }
+  document.getElementById('winnerBox').style.display = 'none';
+  if (entrants.length >= 2) startDraw();
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('ticketsInput').focus(); });
+document.getElementById('ticketsInput').addEventListener('keydown', e => { if (e.key === 'Enter') addEntrant(); });
+
+render();
+</script>
+</body>
+</html>
