@@ -324,7 +324,22 @@
 </div>
 
 <script>
-let entrants = [];
+let entrants = [
+  { name: "Clare Douglas", tickets: 74 },
+  { name: "David Walshe", tickets: 84 },
+  { name: "Elisabeth Burjaw", tickets: 107 },
+  { name: "Elliott Yates", tickets: 625 },
+  { name: "Jason Curtis", tickets: 73 },
+  { name: "Jon Garvey", tickets: 139 },
+  { name: "Jonathan Ashfall", tickets: 202 },
+  { name: "Mathew Pyle", tickets: 186 },
+  { name: "Michael Doherty", tickets: 83 },
+  { name: "Nina Garner", tickets: 58 },
+  { name: "Paul Rennalls", tickets: 66 },
+  { name: "Paul Roman", tickets: 36 },
+  { name: "Rourke Smal", tickets: 92 },
+  { name: "Zahid Hussain", tickets: 318 }
+];
 let lastWinnerIndex = null;
 
 function addEntrant() {
@@ -480,6 +495,7 @@ document.getElementById('nameInput').addEventListener('keydown', e => { if (e.ke
 document.getElementById('ticketsInput').addEventListener('keydown', e => { if (e.key === 'Enter') addEntrant(); });
 
 render();
+document.getElementById('drawBtn').disabled = false;
 </script>
 </body>
 </html>
