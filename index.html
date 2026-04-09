@@ -263,30 +263,6 @@
 <div class="container">
 
   <div class="card">
-    <div class="card-title">Add entrant</div>
-    <div class="add-row">
-      <div class="field">
-        <label>Name</label>
-        <input type="text" id="nameInput" placeholder="e.g. Elliot Smith" />
-      </div>
-      <div class="field">
-        <label>Tickets</label>
-        <input type="number" id="ticketsInput" placeholder="e.g. 1126" min="1" />
-      </div>
-      <button class="btn btn-primary" onclick="addEntrant()" style="align-self:flex-end">Add</button>
-    </div>
-
-    <div class="divider">or paste a list</div>
-
-    <textarea id="bulkInput" placeholder="One per line: Name, Tickets&#10;Elliot Smith, 1126&#10;Sarah Jones, 47&#10;Tom Clarke, 312"></textarea>
-    <p class="paste-hint">Format: Name, Tickets — one person per line. Commas or tabs both work.</p>
-    <div style="margin-top:10px; display:flex; gap:8px;">
-      <button class="btn btn-ghost btn-sm" onclick="importBulk()">Import list</button>
-      <button class="btn btn-ghost btn-sm" onclick="clearAll()">Clear all</button>
-    </div>
-  </div>
-
-  <div class="card">
     <div class="stats-bar">
       <div class="stat"><div class="stat-val" id="statPeople">0</div><div class="stat-label">Entrants</div></div>
       <div class="stat"><div class="stat-val" id="statTickets">0</div><div class="stat-label">Total tickets</div></div>
@@ -342,55 +318,7 @@ let entrants = [
 ];
 let lastWinnerIndex = null;
 
-function addEntrant() {
-  const name = document.getElementById('nameInput').value.trim();
-  const tickets = parseInt(document.getElementById('ticketsInput').value);
-  if (!name) { alert('Please enter a name.'); return; }
-  if (!tickets || tickets < 1) { alert('Please enter a valid ticket count (at least 1).'); return; }
-  const existing = entrants.findIndex(e => e.name.toLowerCase() === name.toLowerCase());
-  if (existing >= 0) entrants[existing].tickets += tickets;
-  else entrants.push({ name, tickets });
-  document.getElementById('nameInput').value = '';
-  document.getElementById('ticketsInput').value = '';
-  document.getElementById('nameInput').focus();
-  render();
-}
 
-function importBulk() {
-  const text = document.getElementById('bulkInput').value.trim();
-  if (!text) return;
-  let added = 0, skipped = 0;
-  text.split('\n').forEach(line => {
-    line = line.trim();
-    if (!line) return;
-    const parts = line.split(/[,\t]+/);
-    if (parts.length < 2) { skipped++; return; }
-    const name = parts[0].trim();
-    const tickets = parseInt(parts[parts.length - 1].trim());
-    if (!name || isNaN(tickets) || tickets < 1) { skipped++; return; }
-    const existing = entrants.findIndex(e => e.name.toLowerCase() === name.toLowerCase());
-    if (existing >= 0) entrants[existing].tickets += tickets;
-    else entrants.push({ name, tickets });
-    added++;
-  });
-  document.getElementById('bulkInput').value = '';
-  render();
-  if (skipped > 0) alert('Imported ' + added + ' entries. ' + skipped + ' lines skipped (unrecognised format).');
-}
-
-function removeEntrant(i) {
-  entrants.splice(i, 1);
-  render();
-}
-
-function clearAll() {
-  if (entrants.length && !confirm('Remove all entrants?')) return;
-  entrants = [];
-  lastWinnerIndex = null;
-  document.getElementById('winnerBox').style.display = 'none';
-  document.getElementById('spinnerBox').style.display = 'none';
-  render();
-}
 
 function render() {
   const total = entrants.reduce((s, e) => s + e.tickets, 0);
@@ -491,11 +419,7 @@ function esc(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('ticketsInput').focus(); });
-document.getElementById('ticketsInput').addEventListener('keydown', e => { if (e.key === 'Enter') addEntrant(); });
-
 render();
-document.getElementById('drawBtn').disabled = false;
 </script>
 </body>
 </html>
